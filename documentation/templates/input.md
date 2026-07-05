@@ -151,3 +151,138 @@ This API confirms a Login OTP in the case where a user enables 2fa.
 ```
 
 [["/user/signin/confirm-otp/","POST"]][Table of contents](#toc)
+
+
+# Retrieve Merchant Detail
+
+This API retrieves details of a Merchant. N.B:This API can be called by anu of a system or merchant admin. If called by a system admin, a merchant_id must be provided. If called by a merchant_admin, complete details of their merchant is retrieved.
+
+**Endpoint:**`/merchant/`
+
+**Method:** `GET`
+
+## Payload
+
+``` json
+
+
+```
+## Response body
+
+**status code:200**
+
+``` json
+{
+  "id": 7,
+  "business_name": "Maytechstop",
+  "business_email": "maytechstop@yopmail.com",
+  "phone_number": "07032812713",
+  "business_type": "saas",
+  "web_url": null,
+  "webhook_url": null,
+  "test_api_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjaGFudF9pZCI6NywibWVyY2hhbnRfbmFtZSI6Ik1heXRlY2hzdG9wIiwibWVyY2hhbnRfZW1haWwiOiJtYXl0ZWNoc3RvcEB5b3BtYWlsLmNvbSIsImVudHJvcHkiOjE3ODMyNDEwODMuNjMzMzEwMywia2V5X3R5cGUiOiJURVNUIn0.mlRyXwdQx8Fba9XyHFqUbnqsw-YuLbvssJqznsl_we0",
+  "live_api_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjaGFudF9pZCI6NywibWVyY2hhbnRfbmFtZSI6Ik1heXRlY2hzdG9wIiwibWVyY2hhbnRfZW1haWwiOiJtYXl0ZWNoc3RvcEB5b3BtYWlsLmNvbSIsImVudHJvcHkiOjE3ODMyNDEwODMuNjMzNDM4OCwia2V5X3R5cGUiOiJQUk9EIn0.3xeWecG5xhsl9A4a-Y0RtnSpyxojTZb7KmfhnUqnPMg",
+  "created": "2026-07-05T08:44:42.660717Z"
+}
+```
+
+[["/merchant/","GET"]][Table of contents](#toc)
+
+
+# Create Plan
+
+This API allows a merchant admin to create a Plan. N.B: Valid options for billing interval include daily,weekly,monthly,annually,custom. In the case where custom is set, a billing_interval_in_days must be specified.
+
+**Endpoint:**`/merchant/plan/`
+
+**Method:** `POST`
+
+## Payload
+
+``` json
+{
+
+"name":"*****",
+
+"description":"*****",
+
+"price":"*****",
+
+"billing_interval":"*****",
+
+"billing_interval_in_days (**optional)":"*****",
+
+"trial_period_in_days":"*****",
+
+}
+
+```
+## Response body
+
+**status code:201**
+
+``` json
+{
+  "id": 1,
+  "name": "Beginner",
+  "description": "This is a beginners plan with simple benefits",
+  "price": "1000.00",
+  "billing_interval": "monthly",
+  "billing_interval_in_days": null,
+  "trial_period_in_days": 10,
+  "status": "active",
+  "created": "2026-07-05T17:01:13.920478Z"
+}
+```
+
+[["/merchant/plan/","POST"]][Table of contents](#toc)
+
+
+# Retrieve Billing Plans
+
+This API allows a merchant admin to retrieve billing plans. N.B:Information of a particular plan can be retrieved by passing a plan_id query parameter.
+
+**Endpoint:**`/merchant/plan/`
+
+**Method:** `GET`
+
+## Payload
+
+``` json
+
+
+```
+## Response body
+
+**status code:200**
+
+``` json
+[
+  {
+    "id": 1,
+    "name": "Beginner",
+    "description": "This is a beginners plan with simple benefits",
+    "price": "1000.00",
+    "billing_interval": "monthly",
+    "billing_interval_in_days": null,
+    "trial_period_in_days": 10,
+    "subscribers": 0,
+    "status": "active",
+    "created": "2026-07-05T17:01:13.920478Z"
+  },
+  {
+    "id": 2,
+    "name": "Starter",
+    "description": "This starter plan offerns new specs and beneit",
+    "price": "1500.00",
+    "billing_interval": "custom",
+    "billing_interval_in_days": 20,
+    "trial_period_in_days": 2,
+    "subscribers": 0,
+    "status": "active",
+    "created": "2026-07-05T20:34:03.961646Z"
+  }
+]
+```
+
+[["/merchant/plan/","GET"]][Table of contents](#toc)

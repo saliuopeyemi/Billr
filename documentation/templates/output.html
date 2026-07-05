@@ -1,26 +1,26 @@
 
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <title>Documentation</title>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown-light.min.css">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pygments/2.16.1/styles/monokai.min.css">
-            <style>
-                body {
-                    box-sizing: border-box;
-                    min-width: 200px;
-                    max-width: 980px;
-                    margin: 0 auto;
-                    padding: 45px;
-                }
-            </style>
-        </head>
-        <body class="markdown-body">
-            <input type="text" id="searchBox" placeholder="Search index..." />
-                <ul id="searchResults"></ul>
-            
-                    <script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Documentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pygments/2.16.1/styles/monokai.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+    </style>
+</head>
+<body class="markdown-body">
+    <input type="text" id="searchBox" placeholder="Search index..." />
+    <ul id="searchResults"></ul>
+    
+    <script>
 document.addEventListener('DOMContentLoaded', function () {
   const searchBox = document.getElementById('searchBox');
   const indexLinks = document.querySelectorAll('#index li a');
@@ -107,17 +107,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }
 
-</script> 
-                    
+</script>
 
 
-        <h1>Billr Backend Documentation<a name='billr_backend_documentation'></a></h1>
+    
+<h1>Billr Backend Documentation<a name='billr_backend_documentation'></a></h1>
 <h2>Index<a name='toc'></a></h2>
 <ol id='index'>
 <li><a href="#billr_backend_documentation">billr backend documentation</a></li>
 <li><a href="#confirm_otp">confirm otp</a></li>
+<li><a href="#create_plan">create plan</a></li>
 <li><a href="#login">login</a></li>
 <li><a href="#merchant_register">merchant register</a></li>
+<li><a href="#retrieve_billing_plans">retrieve billing plans</a></li>
+<li><a href="#retrieve_merchant_detail">retrieve merchant detail</a></li>
 </ol>
 <h1>Merchant Register<a name='merchant_register'></a></h1>
 <p>This API allows registering of a merchant. N.B:A merchant admin is automatically created for the merchant.</p>
@@ -230,8 +233,107 @@ document.addEventListener('DOMContentLoaded', function () {
 }
 </code></pre>
 <p><button onclick="openApiTester('/user/signin/confirm-otp/','POST')">Run Test</button><a href="#toc">Table of contents</a></p>
+<h1>Retrieve Merchant Detail<a name='retrieve_merchant_detail'></a></h1>
+<p>This API retrieves details of a Merchant. N.B:This API can be called by anu of a system or merchant admin. If called by a system admin, a merchant_id must be provided. If called by a merchant_admin, complete details of their merchant is retrieved.</p>
+<p><strong>Endpoint:</strong><code>/merchant/</code></p>
+<p><strong>Method:</strong> <code>GET</code></p>
+<h2>Payload</h2>
+<pre><code class="language-json">
 
-        
+</code></pre>
+<h2>Response body</h2>
+<p><strong>status code:200</strong></p>
+<pre><code class="language-json">{
+  &quot;id&quot;: 7,
+  &quot;business_name&quot;: &quot;Maytechstop&quot;,
+  &quot;business_email&quot;: &quot;maytechstop@yopmail.com&quot;,
+  &quot;phone_number&quot;: &quot;07032812713&quot;,
+  &quot;business_type&quot;: &quot;saas&quot;,
+  &quot;web_url&quot;: null,
+  &quot;webhook_url&quot;: null,
+  &quot;test_api_key&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjaGFudF9pZCI6NywibWVyY2hhbnRfbmFtZSI6Ik1heXRlY2hzdG9wIiwibWVyY2hhbnRfZW1haWwiOiJtYXl0ZWNoc3RvcEB5b3BtYWlsLmNvbSIsImVudHJvcHkiOjE3ODMyNDEwODMuNjMzMzEwMywia2V5X3R5cGUiOiJURVNUIn0.mlRyXwdQx8Fba9XyHFqUbnqsw-YuLbvssJqznsl_we0&quot;,
+  &quot;live_api_key&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZXJjaGFudF9pZCI6NywibWVyY2hhbnRfbmFtZSI6Ik1heXRlY2hzdG9wIiwibWVyY2hhbnRfZW1haWwiOiJtYXl0ZWNoc3RvcEB5b3BtYWlsLmNvbSIsImVudHJvcHkiOjE3ODMyNDEwODMuNjMzNDM4OCwia2V5X3R5cGUiOiJQUk9EIn0.3xeWecG5xhsl9A4a-Y0RtnSpyxojTZb7KmfhnUqnPMg&quot;,
+  &quot;created&quot;: &quot;2026-07-05T08:44:42.660717Z&quot;
+}
+</code></pre>
+<p><button onclick="openApiTester('/merchant/','GET')">Run Test</button><a href="#toc">Table of contents</a></p>
+<h1>Create Plan<a name='create_plan'></a></h1>
+<p>This API allows a merchant admin to create a Plan. N.B: Valid options for billing interval include daily,weekly,monthly,annually,custom. In the case where custom is set, a billing_interval_in_days must be specified.</p>
+<p><strong>Endpoint:</strong><code>/merchant/plan/</code></p>
+<p><strong>Method:</strong> <code>POST</code></p>
+<h2>Payload</h2>
+<pre><code class="language-json">{
+
+&quot;name&quot;:&quot;*****&quot;,
+
+&quot;description&quot;:&quot;*****&quot;,
+
+&quot;price&quot;:&quot;*****&quot;,
+
+&quot;billing_interval&quot;:&quot;*****&quot;,
+
+&quot;billing_interval_in_days (**optional)&quot;:&quot;*****&quot;,
+
+&quot;trial_period_in_days&quot;:&quot;*****&quot;,
+
+}
+
+</code></pre>
+<h2>Response body</h2>
+<p><strong>status code:201</strong></p>
+<pre><code class="language-json">{
+  &quot;id&quot;: 1,
+  &quot;name&quot;: &quot;Beginner&quot;,
+  &quot;description&quot;: &quot;This is a beginners plan with simple benefits&quot;,
+  &quot;price&quot;: &quot;1000.00&quot;,
+  &quot;billing_interval&quot;: &quot;monthly&quot;,
+  &quot;billing_interval_in_days&quot;: null,
+  &quot;trial_period_in_days&quot;: 10,
+  &quot;status&quot;: &quot;active&quot;,
+  &quot;created&quot;: &quot;2026-07-05T17:01:13.920478Z&quot;
+}
+</code></pre>
+<p><button onclick="openApiTester('/merchant/plan/','POST')">Run Test</button><a href="#toc">Table of contents</a></p>
+<h1>Retrieve Billing Plans<a name='retrieve_billing_plans'></a></h1>
+<p>This API allows a merchant admin to retrieve billing plans. N.B:Information of a particular plan can be retrieved by passing a plan_id query parameter.</p>
+<p><strong>Endpoint:</strong><code>/merchant/plan/</code></p>
+<p><strong>Method:</strong> <code>GET</code></p>
+<h2>Payload</h2>
+<pre><code class="language-json">
+
+</code></pre>
+<h2>Response body</h2>
+<p><strong>status code:200</strong></p>
+<pre><code class="language-json">[
+  {
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;Beginner&quot;,
+    &quot;description&quot;: &quot;This is a beginners plan with simple benefits&quot;,
+    &quot;price&quot;: &quot;1000.00&quot;,
+    &quot;billing_interval&quot;: &quot;monthly&quot;,
+    &quot;billing_interval_in_days&quot;: null,
+    &quot;trial_period_in_days&quot;: 10,
+    &quot;subscribers&quot;: 0,
+    &quot;status&quot;: &quot;active&quot;,
+    &quot;created&quot;: &quot;2026-07-05T17:01:13.920478Z&quot;
+  },
+  {
+    &quot;id&quot;: 2,
+    &quot;name&quot;: &quot;Starter&quot;,
+    &quot;description&quot;: &quot;This starter plan offerns new specs and beneit&quot;,
+    &quot;price&quot;: &quot;1500.00&quot;,
+    &quot;billing_interval&quot;: &quot;custom&quot;,
+    &quot;billing_interval_in_days&quot;: 20,
+    &quot;trial_period_in_days&quot;: 2,
+    &quot;subscribers&quot;: 0,
+    &quot;status&quot;: &quot;active&quot;,
+    &quot;created&quot;: &quot;2026-07-05T20:34:03.961646Z&quot;
+  }
+]
+</code></pre>
+<p><button onclick="openApiTester('/merchant/plan/','GET')">Run Test</button><a href="#toc">Table of contents</a></p>
+
+
 <div id="apiTester" style="position:fixed; bottom:20px; right:20px; width:300px; height:400px; 
             background:#fff; border:1px solid #ccc; border-radius:8px; 
             box-shadow:0px 4px 12px rgba(0,0,0,0.2); padding:10px; 
@@ -269,6 +371,5 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
 
 
-        </body>
-        </html>
-        
+</body>
+</html>

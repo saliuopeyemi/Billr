@@ -72,3 +72,59 @@ class RetrieveMerchantSerializer(serializers.ModelSerializer):
         model = models.Merchant
         fields = ["id","business_name","business_email","phone_number","business_type","web_url","test_api_key"]
 
+class MiniMerchantSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Merchant
+        fields = ["id","business_email","business_name","phone_number"]
+
+class MaxMerchantSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = models.Merchant
+        fields = "__all__"
+
+class CreatePlanSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=250)
+    description = serializers.CharField()
+    price = serializers.DecimalField(max_digits=40,decimal_places=2)
+    billing_interval = serializers.ChoiceField(choices=models.BILLING_INTERVAL)
+    billing_interval_in_days = serializers.IntegerField(required=False)
+    trial_period_in_days = serializers.IntegerField()
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.caller = self.context["user"]
+
+    def validate_name(self,name):
+        if models.Plan.objects.filter(name__iexact=name,merchant=self.caller.related_merchant).exists():
+            raise serializers.ValidationError("A Plan with this name already exists.")
+        return name
+
+    def validate(self,data):
+        billing_interval = data.get("billing_interval")
+        if billing_interval == "custom":
+            billing_interval_in_days = data.get("billing_interval_in_days")
+            if not billing_interval_in_days:
+                raise serializers.ValidationError("billing_intrval_in_days must be provided for custom billing")
+        else:
+            #Ensure billing_interval_in_days property is always Null when not custom
+            data.pop("billing_interval_in_days",None)
+
+        return data
+
+    def create(self,validated_data):
+        validated_data["merchant"] = self.caller.related_merchant
+        plan = models.Plan.objects.create(**validated_data)
+        return plan
+
+
+class RetrievePlanSerializer(serializers.ModelSerializer):
+    subscribers = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Plan
+        fields = ["id","name","description","price","billing_interval","billing_interval_in_days","trial_period_in_days","subscribers","status","created"]
+
+    def get_subscribers(self,obj):
+        return 0

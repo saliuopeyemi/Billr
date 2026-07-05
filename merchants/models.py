@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import choices
 
 
 BUSINESS_TYPE = (
@@ -7,6 +8,22 @@ BUSINESS_TYPE = (
     ("freelance","freelance"),
     ("others","others")
 )
+
+BILLING_INTERVAL = (
+    ("daily","daily"),
+    ("weekly","weekly"),
+    ("monthly","monthly"),
+    ("annually","annually"),
+    ("custom","custom")
+)
+
+PLAN_STATUS = (
+    ("active","active"),
+    ("inactive","inactive"),
+    ("archived","archived")
+)
+
+
 
 
 class Merchant(models.Model):
@@ -22,3 +39,15 @@ class Merchant(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
 
+
+class Plan(models.Model):
+    name = models.CharField(max_length=250)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=40,decimal_places=2)
+    billing_interval = models.CharField(max_length=100,choices=BILLING_INTERVAL)
+    billing_interval_in_days = models.IntegerField(null=True)
+    trial_period_in_days = models.IntegerField(null=True)
+    status = models.CharField(PLAN_STATUS,max_length=100,default="active")
+
+    merchant = models.ForeignKey(Merchant,on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
