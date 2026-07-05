@@ -54,7 +54,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
 
     'users',
-    'tenants',
+    'merchants',
+
+    'documentation',
 ]
 
 MIDDLEWARE = [
@@ -142,6 +144,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+#JWT config
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES":[
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -153,3 +156,38 @@ TOKEN_LIFETIME = 6
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME":timedelta(hours=TOKEN_LIFETIME)
 }
+
+#Email config
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+
+
+# celery config
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.getenv("CACHE_LOCATION"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
+
+#Cors config
+#Turn this off in production
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOWED_ORIGINS = [
+
+]

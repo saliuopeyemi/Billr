@@ -1,3 +1,5 @@
 pyrightconfig.json
 .env
 commit.txt
+**__pycache**
+
