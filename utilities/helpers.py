@@ -1,6 +1,3 @@
-
-
-
 def ensure_value_is_a_list(value,fail_function,*args,**kwargs):
     if not isinstance(value,list):
         fail_function(*args,**kwargs)
@@ -22,3 +19,9 @@ def retrieve_object(obj_id,db_model,fail_function,*args,**kwargs):
     else:
         return obj
 
+def ensure_merchant_apikey_is_active(request,merchant,fail_function,*args,**kwargs):
+    token = request.headers.get("Authorization")
+    scheme, _, apikey = token.partition(" ")
+    if (merchant.test_api_key != apikey) and (merchant.live_api_key != apikey):
+        fail_function(*args,**kwargs)
+    return True

@@ -286,3 +286,124 @@ This API allows a merchant admin to retrieve billing plans. N.B:Information of a
 ```
 
 [["/merchant/plan/","GET"]][Table of contents](#toc)
+
+
+# Update Plan
+
+This API allows a merchant admin to update a billing plan parameters. N.B:A plan_id query parameter is required for this request.
+
+**Endpoint:**`/merchant/plan/?plan_id=1`
+
+**Method:** `PUT`
+
+## Payload
+
+``` json
+{
+
+'name':'*****',
+
+'description':'*****',
+
+'price':'*****',
+
+'billing_interval':'*****',
+
+'billing_interval_in_days (**optional)':'*****',
+
+'trial_period_in_days':'*****',
+
+}
+
+```
+## Response body
+
+**status code:200**
+
+``` json
+{
+    "id": 2,
+    "name": "Starter",
+    "description": "This starter plan offerns new specs and beneit",
+    "price": "2000.00",
+    "billing_interval": "custom",
+    "billing_interval_in_days": 20,
+    "trial_period_in_days": 2,
+    "subscribers": 0,
+    "status": "active",
+    "created": "2026-07-05T20:34:03.961646Z"
+  }
+```
+
+[["/merchant/plan/?plan_id=1","PUT"]][Table of contents](#toc)
+
+
+# Delete Billing Plan
+
+This API allows a merchant admin to dleete a billing plan. N.B:A plan_id query parameter is required for this request.
+
+**Endpoint:**`/merchant/plan/?plan_id=3`
+
+**Method:** `DELETE`
+
+## Payload
+
+``` json
+
+
+```
+## Response body
+
+**status code:204**
+
+[["/merchant/plan/?plan_id=3","DELETE"]][Table of contents](#toc)
+
+
+# Retrieve Merchant Plans Integration
+
+This API plugs into the merchants application allows the merchant retrieve all the Billing Plans setup within the platform. N.B:A valid APIKey is required within the Authorization-Bearer header.
+
+**Endpoint:**`/integration/plans/`
+
+**Method:** `GET`
+
+## Payload
+
+``` json
+
+
+```
+## Response body
+
+**status code:200**
+
+``` json
+[
+  {
+    "id": 1,
+    "name": "Beginner",
+    "description": "This is a beginners plan with simple benefits",
+    "price": "1000.00",
+    "billing_interval": "monthly",
+    "billing_interval_in_days": null,
+    "trial_period_in_days": 10,
+    "subscribers": 0,
+    "status": "active",
+    "created": "2026-07-05T17:01:13.920478Z"
+  },
+  {
+    "id": 2,
+    "name": "Starter",
+    "description": "This starter plan offerns new specs and beneit",
+    "price": "2000.00",
+    "billing_interval": "custom",
+    "billing_interval_in_days": 20,
+    "trial_period_in_days": 2,
+    "subscribers": 0,
+    "status": "active",
+    "created": "2026-07-05T20:34:03.961646Z"
+  }
+]
+```
+
+[["/integration/plans/","GET"]][Table of contents](#toc)

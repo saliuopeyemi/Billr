@@ -1,4 +1,3 @@
-from os import stat
 from django.http import Http404
 
 from rest_framework.response import Response
@@ -10,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from . import serializers,models
 from users.permissions import IsActuallyLoggedIn,IsAnAdmin, IsMerchantAdmin
+from merchants.middleware import MerchantIntegration
 
 from utilities.helpers import retrieve_query_parameter, retrieve_object
 
@@ -86,6 +86,26 @@ class PlanView(APIView):
             output = serializers.RetrievePlanSerializer(plan,many=False).data
         return Response(output,status=status.HTTP_200_OK)
 
+    def put(self,request):
+        user = request.user
+        plan_id = retrieve_query_parameter(request,"plan_id",no_parameter_fails,"plan_id")
+        plan = retrieve_object(plan_id,models.Plan,no_objects_fails,"Plan")
+        if plan.merchant != user.related_merchant:
+            return Response({"error":"This Plan does not belong to your merchant."},status=status.HTTP_403_FORBIDDEN)
+        serializer = serializers.UpdatePlanSerializer(data=request.data,instance=plan,partial=True,context={"user":user})
+        if serializer.is_valid(raise_exception=True):
+            plan = serializer.save()
+            output = serializers.RetrievePlanSerializer(plan,many=False).data
+            return Response(output,status=status.HTTP_200_OK)
+
+    def delete(self,request):
+        user = request.user
+        plan_id = retrieve_query_parameter(request,"plan_id",no_parameter_fails,"plan_id")
+        plan = retrieve_object(plan_id,models.Plan,no_objects_fails,"Plan")
+        if plan.merchant != user.related_merchant:
+            return Response({"error":"This Plan does not belong to your merchant."},status=status.HTTP_403_FORBIDDEN)
+        plan.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
@@ -97,4 +117,5 @@ class TestView(APIView):
     ]
 
     def get(self,request):
+        print(request.query_params)
         return Response({"INSTALLED"},status=status.HTTP_200_OK)

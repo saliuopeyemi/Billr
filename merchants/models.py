@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import choices
 
 
+
 BUSINESS_TYPE = (
     ("saas","saas"),
     ("agency","agency"),
@@ -23,6 +24,11 @@ PLAN_STATUS = (
     ("archived","archived")
 )
 
+BILLING_STATUS = (
+    ("successful","successful"),
+    ("failed","failed"),
+    ("pending","pending")
+)
 
 
 
@@ -51,3 +57,20 @@ class Plan(models.Model):
 
     merchant = models.ForeignKey(Merchant,on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
+
+
+class Subscribers(models.Model):
+    subscriber = models.ForeignKey("users.User",on_delete=models.CASCADE)
+    plan = models.ForeignKey(Plan,on_delete=models.CASCADE)
+    next_payment = models.DateField()
+    previous_payment = models.DateField(null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+class BillingHistory(models.Model):
+    subscriber = models.ForeignKey("users.User",on_delete=models.CASCADE)
+    plan = models.ForeignKey(Plan,on_delete=models.SET_NULL,null=True)
+    amount = models.DecimalField(max_digits=40,decimal_places=2)
+    status = models.CharField(max_length=20,choices=BILLING_STATUS,default="pending")
+
+    last_updated = models.DateTimeField(auto_now=True)
+    timestamp = models.DateTimeField(auto_now_add=True)

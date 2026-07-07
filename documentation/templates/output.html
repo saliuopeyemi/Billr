@@ -117,10 +117,13 @@ document.addEventListener('DOMContentLoaded', function () {
 <li><a href="#billr_backend_documentation">billr backend documentation</a></li>
 <li><a href="#confirm_otp">confirm otp</a></li>
 <li><a href="#create_plan">create plan</a></li>
+<li><a href="#delete_billing_plan">delete billing plan</a></li>
 <li><a href="#login">login</a></li>
 <li><a href="#merchant_register">merchant register</a></li>
 <li><a href="#retrieve_billing_plans">retrieve billing plans</a></li>
 <li><a href="#retrieve_merchant_detail">retrieve merchant detail</a></li>
+<li><a href="#retrieve_merchant_plans_integration">retrieve merchant plans integration</a></li>
+<li><a href="#update_plan">update plan</a></li>
 </ol>
 <h1>Merchant Register<a name='merchant_register'></a></h1>
 <p>This API allows registering of a merchant. N.B:A merchant admin is automatically created for the merchant.</p>
@@ -332,6 +335,93 @@ document.addEventListener('DOMContentLoaded', function () {
 ]
 </code></pre>
 <p><button onclick="openApiTester('/merchant/plan/','GET')">Run Test</button><a href="#toc">Table of contents</a></p>
+<h1>Update Plan<a name='update_plan'></a></h1>
+<p>This API allows a merchant admin to update a billing plan parameters. N.B:A plan_id query parameter is required for this request.</p>
+<p><strong>Endpoint:</strong><code>/merchant/plan/?plan_id=1</code></p>
+<p><strong>Method:</strong> <code>PUT</code></p>
+<h2>Payload</h2>
+<pre><code class="language-json">{
+
+'name':'*****',
+
+'description':'*****',
+
+'price':'*****',
+
+'billing_interval':'*****',
+
+'billing_interval_in_days (**optional)':'*****',
+
+'trial_period_in_days':'*****',
+
+}
+
+</code></pre>
+<h2>Response body</h2>
+<p><strong>status code:200</strong></p>
+<pre><code class="language-json">{
+    &quot;id&quot;: 2,
+    &quot;name&quot;: &quot;Starter&quot;,
+    &quot;description&quot;: &quot;This starter plan offerns new specs and beneit&quot;,
+    &quot;price&quot;: &quot;2000.00&quot;,
+    &quot;billing_interval&quot;: &quot;custom&quot;,
+    &quot;billing_interval_in_days&quot;: 20,
+    &quot;trial_period_in_days&quot;: 2,
+    &quot;subscribers&quot;: 0,
+    &quot;status&quot;: &quot;active&quot;,
+    &quot;created&quot;: &quot;2026-07-05T20:34:03.961646Z&quot;
+  }
+</code></pre>
+<p><button onclick="openApiTester('/merchant/plan/?plan_id=1','PUT')">Run Test</button><a href="#toc">Table of contents</a></p>
+<h1>Delete Billing Plan<a name='delete_billing_plan'></a></h1>
+<p>This API allows a merchant admin to dleete a billing plan. N.B:A plan_id query parameter is required for this request.</p>
+<p><strong>Endpoint:</strong><code>/merchant/plan/?plan_id=3</code></p>
+<p><strong>Method:</strong> <code>DELETE</code></p>
+<h2>Payload</h2>
+<pre><code class="language-json">
+
+</code></pre>
+<h2>Response body</h2>
+<p><strong>status code:204</strong></p>
+<p><button onclick="openApiTester('/merchant/plan/?plan_id=3','DELETE')">Run Test</button><a href="#toc">Table of contents</a></p>
+<h1>Retrieve Merchant Plans Integration<a name='retrieve_merchant_plans_integration'></a></h1>
+<p>This API plugs into the merchants application allows the merchant retrieve all the Billing Plans setup within the platform. N.B:A valid APIKey is required within the Authorization-Bearer header.</p>
+<p><strong>Endpoint:</strong><code>/integration/plans/</code></p>
+<p><strong>Method:</strong> <code>GET</code></p>
+<h2>Payload</h2>
+<pre><code class="language-json">
+
+</code></pre>
+<h2>Response body</h2>
+<p><strong>status code:200</strong></p>
+<pre><code class="language-json">[
+  {
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;Beginner&quot;,
+    &quot;description&quot;: &quot;This is a beginners plan with simple benefits&quot;,
+    &quot;price&quot;: &quot;1000.00&quot;,
+    &quot;billing_interval&quot;: &quot;monthly&quot;,
+    &quot;billing_interval_in_days&quot;: null,
+    &quot;trial_period_in_days&quot;: 10,
+    &quot;subscribers&quot;: 0,
+    &quot;status&quot;: &quot;active&quot;,
+    &quot;created&quot;: &quot;2026-07-05T17:01:13.920478Z&quot;
+  },
+  {
+    &quot;id&quot;: 2,
+    &quot;name&quot;: &quot;Starter&quot;,
+    &quot;description&quot;: &quot;This starter plan offerns new specs and beneit&quot;,
+    &quot;price&quot;: &quot;2000.00&quot;,
+    &quot;billing_interval&quot;: &quot;custom&quot;,
+    &quot;billing_interval_in_days&quot;: 20,
+    &quot;trial_period_in_days&quot;: 2,
+    &quot;subscribers&quot;: 0,
+    &quot;status&quot;: &quot;active&quot;,
+    &quot;created&quot;: &quot;2026-07-05T20:34:03.961646Z&quot;
+  }
+]
+</code></pre>
+<p><button onclick="openApiTester('/integration/plans/','GET')">Run Test</button><a href="#toc">Table of contents</a></p>
 
 
 <div id="apiTester" style="position:fixed; bottom:20px; right:20px; width:300px; height:400px; 

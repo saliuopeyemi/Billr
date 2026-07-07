@@ -128,3 +128,41 @@ class RetrievePlanSerializer(serializers.ModelSerializer):
 
     def get_subscribers(self,obj):
         return 0
+
+class UpdatePlanSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=250)
+    description = serializers.CharField()
+    price = serializers.DecimalField(max_digits=40,decimal_places=2)
+    billing_interval = serializers.ChoiceField(choices=models.BILLING_INTERVAL)
+    billing_interval_in_days = serializers.IntegerField(required=False)
+    trial_period_in_days = serializers.IntegerField()
+
+    def __init__(self,*args,**kwargs):
+        super().__init__(*args,**kwargs)
+        self.caller = self.context["user"]
+
+    def validate_name(self,name):
+        if models.Plan.objects.filter(name=name,merchant=self.caller.related_merchant).exclude(name=name).exists():
+            raise serializers.ValidationError("A Plan with this name already exists.")
+        return name
+
+    def validate(self,data):
+        billing_interval = data.get("billing_interval")
+        if billing_interval:
+            if billing_interval == "custom":
+                billing_interval_in_days = data.get("billing_interval_in_days")
+                if not billing_interval_in_days:
+                    raise serializers.ValidationError("billing_intrval_in_days must be provided for custom billing")
+            else:
+                #Ensure billing_interval_in_days property is always Null when not custom
+                data.pop("billing_interval_in_days",None)
+
+            return data
+        return data
+
+    def update(self,instance,validated_data):
+        for attr,value in validated_data.items():
+            setattr(instance,attr,value)
+        instance.save()
+        return instance
+

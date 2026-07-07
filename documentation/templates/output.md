@@ -7,10 +7,13 @@
 1. [billr backend documentation](#billr_backend_documentation)  
 2. [confirm otp](#confirm_otp)  
 3. [create plan](#create_plan)  
-4. [login](#login)  
-5. [merchant register](#merchant_register)  
-6. [retrieve billing plans](#retrieve_billing_plans)  
-7. [retrieve merchant detail](#retrieve_merchant_detail)  
+4. [delete billing plan](#delete_billing_plan)  
+5. [login](#login)  
+6. [merchant register](#merchant_register)  
+7. [retrieve billing plans](#retrieve_billing_plans)  
+8. [retrieve merchant detail](#retrieve_merchant_detail)  
+9. [retrieve merchant plans integration](#retrieve_merchant_plans_integration)  
+10. [update plan](#update_plan)  
 
 
 # Merchant Register<a name='merchant_register'></a>
@@ -293,3 +296,124 @@ This API allows a merchant admin to retrieve billing plans. N.B:Information of a
 ```
 
 [["/merchant/plan/","GET"]][Table of contents](#toc)
+
+
+# Update Plan<a name='update_plan'></a>
+
+This API allows a merchant admin to update a billing plan parameters. N.B:A plan_id query parameter is required for this request.
+
+**Endpoint:**`/merchant/plan/?plan_id=1`
+
+**Method:** `PUT`
+
+## Payload
+
+``` json
+{
+
+'name':'*****',
+
+'description':'*****',
+
+'price':'*****',
+
+'billing_interval':'*****',
+
+'billing_interval_in_days (**optional)':'*****',
+
+'trial_period_in_days':'*****',
+
+}
+
+```
+## Response body
+
+**status code:200**
+
+``` json
+{
+    "id": 2,
+    "name": "Starter",
+    "description": "This starter plan offerns new specs and beneit",
+    "price": "2000.00",
+    "billing_interval": "custom",
+    "billing_interval_in_days": 20,
+    "trial_period_in_days": 2,
+    "subscribers": 0,
+    "status": "active",
+    "created": "2026-07-05T20:34:03.961646Z"
+  }
+```
+
+[["/merchant/plan/?plan_id=1","PUT"]][Table of contents](#toc)
+
+
+# Delete Billing Plan<a name='delete_billing_plan'></a>
+
+This API allows a merchant admin to dleete a billing plan. N.B:A plan_id query parameter is required for this request.
+
+**Endpoint:**`/merchant/plan/?plan_id=3`
+
+**Method:** `DELETE`
+
+## Payload
+
+``` json
+
+
+```
+## Response body
+
+**status code:204**
+
+[["/merchant/plan/?plan_id=3","DELETE"]][Table of contents](#toc)
+
+
+# Retrieve Merchant Plans Integration<a name='retrieve_merchant_plans_integration'></a>
+
+This API plugs into the merchants application allows the merchant retrieve all the Billing Plans setup within the platform. N.B:A valid APIKey is required within the Authorization-Bearer header.
+
+**Endpoint:**`/integration/plans/`
+
+**Method:** `GET`
+
+## Payload
+
+``` json
+
+
+```
+## Response body
+
+**status code:200**
+
+``` json
+[
+  {
+    "id": 1,
+    "name": "Beginner",
+    "description": "This is a beginners plan with simple benefits",
+    "price": "1000.00",
+    "billing_interval": "monthly",
+    "billing_interval_in_days": null,
+    "trial_period_in_days": 10,
+    "subscribers": 0,
+    "status": "active",
+    "created": "2026-07-05T17:01:13.920478Z"
+  },
+  {
+    "id": 2,
+    "name": "Starter",
+    "description": "This starter plan offerns new specs and beneit",
+    "price": "2000.00",
+    "billing_interval": "custom",
+    "billing_interval_in_days": 20,
+    "trial_period_in_days": 2,
+    "subscribers": 0,
+    "status": "active",
+    "created": "2026-07-05T20:34:03.961646Z"
+  }
+]
+```
+
+[["/integration/plans/","GET"]][Table of contents](#toc)
